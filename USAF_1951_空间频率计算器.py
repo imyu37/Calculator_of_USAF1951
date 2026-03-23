@@ -109,8 +109,8 @@ result_layout = [
         sg.Multiline(
             "",
             key="-RESULT-",
-            size=(80, 12),
-            font=("Consolas", 10),
+            size=(80, 10),
+            font=("微软雅黑", 9),
             background_color="#F5F5F5",
             text_color="#C7501A",
             disabled=True,
@@ -137,9 +137,7 @@ reference_layout = [
 # 界面布局
 layout = [
     input_layout,
-    [sg.HorizontalSeparator()],
     result_layout,
-    [sg.HorizontalSeparator()],
     reference_layout,
     [
         sg.Button(
@@ -153,7 +151,7 @@ layout = [
 
 # 创建窗口
 window = sg.Window("", layout, font=("微软雅黑", 10), finalize=True)
-window.set_min_size((600, 600))
+window.size = (550, 600)
 
 
 def format_result(group, element, spatial_frequency, line_width, unit):
@@ -162,25 +160,25 @@ def format_result(group, element, spatial_frequency, line_width, unit):
     unit_short = unit_map.get(unit, "mm")
 
     result_text = "USAF 1951 计算结果:\n"
-    result_text += "═════════════════════════════════════════════════════════════\n"
+    result_text += "═════════════════════════════════════\n"
     result_text += f"组 (Group): {group}\n"
     result_text += f"元素 (Element): {element}\n"
     result_text += f"模式描述: {get_usaf_description(group, element)}\n\n"
 
-    result_text += f"空间频率: {spatial_frequency:.6f} lp/mm\n\n"
+    result_text += f"空间频率: {spatial_frequency:.1f} lp/mm\n\n"
 
     result_text += f"线宽 ({unit_short}):\n"
     if unit_short == "mm":
         result_text += f"  • {line_width:.6f} mm\n"
-        result_text += f"  • {line_width * 1000:.3f} μm\n"
+        result_text += f"  • {line_width * 1000:.2f} μm\n"
         result_text += f"  • {line_width * 1e6:.1f} nm\n"
     elif unit_short == "μm":
         result_text += f"  • {line_width / 1000:.6f} mm\n"
-        result_text += f"  • {line_width:.3f} μm\n"
+        result_text += f"  • {line_width:.2f} μm\n"
         result_text += f"  • {line_width * 1000:.1f} nm\n"
     else:  # nm
         result_text += f"  • {line_width / 1e6:.6f} mm\n"
-        result_text += f"  • {line_width / 1000:.3f} μm\n"
+        result_text += f"  • {line_width / 1000:.2f} μm\n"
         result_text += f"  • {line_width:.1f} nm\n"
 
     result_text += "\n物理意义:\n"
@@ -204,7 +202,7 @@ def generate_reference_table():
     """生成USAF 1951参考表"""
     reference_text = "USAF 1951 标准分辨率表 (lp/mm):\n"
     reference_text += (
-        "Group│Element 1│Element 2│Element 3│Element 4│Element 5│Element 6\n"
+        "\nGroup│Element 1│Element 2│Element 3│Element 4│Element 5│Element 6\n"
     )
     reference_text += (
         "─────┼─────────┼─────────┼─────────┼─────────┼─────────┼─────────\n"
@@ -260,13 +258,11 @@ while True:
         reference_text = generate_reference_table()
         window["-REFERENCE-"].update(reference_text)
         sg.popup(
-            "USAF 1951 完整参考表",
             reference_text,
-            font=("Consolas", 8),
+            font=("consolas", 10),
             title="USAF 1951 参考表",
             non_blocking=True,
         )
-
     if event == "清除":
         window["-RESULT-"].update("")
 
