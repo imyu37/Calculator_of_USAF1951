@@ -104,7 +104,7 @@ input_layout = [
 
 # 结果展示布局
 result_layout = [
-    [sg.Text("计算结果", font=("微软雅黑", 11), text_color="#2B579A")],
+    [sg.Text("计算结果", font=("微软雅黑", 10, "bold"), text_color="#2B579A")],
     [
         sg.Multiline(
             "",
@@ -120,12 +120,16 @@ result_layout = [
 
 # 参考信息布局
 reference_layout = [
-    [sg.Text("USAF 1951 参考信息", font=("微软雅黑", 11), text_color="#2B579A")],
+    [
+        sg.Text(
+            "USAF 1951 参考信息", font=("微软雅黑", 10, "bold"), text_color="#2B579A"
+        )
+    ],
     [
         sg.Multiline(
             "",
             key="-REFERENCE-",
-            size=(80, 8),
+            size=(80, 18),
             font=("Consolas", 10),
             background_color="#F0F0F0",
             text_color="#2B579A",
@@ -143,15 +147,14 @@ layout = [
         sg.Button(
             "计算", size=12, button_color=("white", "#4B8BBE"), bind_return_key=True
         ),
-        sg.Button("显示全部模式", size=15, button_color=("white", "#32CD32")),
         sg.Button("清除", size=10, button_color=("white", "#6D6D6D")),
+        sg.Button("关于", size=10, button_color=("white", "#32CD32")),
         sg.Button("退出", size=10, button_color=("white", "#8B0000")),
     ],
 ]
 
 # 创建窗口
-window = sg.Window("", layout, font=("微软雅黑", 10), finalize=True)
-window.size = (550, 600)
+window = sg.Window("", layout, font=("微软雅黑", 10), finalize=True, size=(550, 720))
 
 
 def format_result(group, element, spatial_frequency, line_width, unit):
@@ -200,7 +203,9 @@ def format_result(group, element, spatial_frequency, line_width, unit):
 
 def generate_reference_table():
     """生成USAF 1951参考表"""
-    reference_text = "USAF 1951 标准分辨率表 (lp/mm):\n"
+    reference_text = (
+        "                     USAF 1951 标准分辨率表 (lp/mm)                     \n"
+    )
     reference_text += (
         "\nGroup│Element 1│Element 2│Element 3│Element 4│Element 5│Element 6\n"
     )
@@ -254,15 +259,18 @@ while True:
         except (ValueError, TypeError):
             sg.popup_error("输入错误！请选择有效的组和元素值", title="错误提示")
 
-    if event == "显示全部模式":
-        reference_text = generate_reference_table()
-        window["-REFERENCE-"].update(reference_text)
+    if event == "关于":
         sg.popup(
-            reference_text,
-            font=("consolas", 10),
-            title="USAF 1951 参考表",
+            "USAF 1951 空间频率计算器\n"
+            "版本: 1.0\n"
+            "作者: imyu37\n"
+            "邮箱: wanyong_37@hotmail.com\n"
+            "描述: 用于计算USAF 1951标准的空间频率的工具",
+            font=("微软雅黑", 10),
+            title="关于",
             non_blocking=True,
         )
+
     if event == "清除":
         window["-RESULT-"].update("")
 
