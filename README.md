@@ -1,5 +1,7 @@
 # USAF 1951 空间频率计算器
 
+**简体中文** | [English](README_en.md)
+
 这是一个基于Python和FreeSimpleGUI开发的USAF 1951分辨率测试靶标准计算器。该工具可以帮助用户快速计算USAF 1951标准中的空间频率和对应的线宽。
 
 ## 功能特点
